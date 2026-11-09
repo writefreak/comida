@@ -1,34 +1,88 @@
-type PageDividerProps = {
-  /** Fill color of the torn edge shape, as a CSS color value */
-  fill?: string;
-  flip?: boolean;
-};
+"use client";
 
-/**
- * A torn paper edge used between sections in place of a hard rule.
- * Echoes the deckled edge of a printed page rather than a decorative flourish.
- */
-export default function PageDivider({
-  fill = "#fbf6ee",
-  flip = false,
-}: PageDividerProps) {
+import { motion, useReducedMotion } from "framer-motion";
+import { TrendingUp } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const items = [
+  "Order your meal",
+  "Choose favorite dishes",
+  "Fresh to your door",
+  "Hot and ready fast",
+];
+
+// Repeated so one group is always wider than the screen, even on ultrawide monitors
+const group = [...items, ...items];
+
+// One wave period, used as a mask so the colour comes from bg-primary
+const waveMask = `url("data:image/svg+xml,${encodeURIComponent(
+  "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40' preserveAspectRatio='none'><path d='M0 20Q30 0 60 20T120 20V40H0Z'/></svg>",
+)}")`;
+
+function Wave({ flip = false }: { flip?: boolean }) {
   return (
     <div
-      className={`deckle-edge ${flip ? "rotate-180" : ""}`}
-      aria-hidden="true"
-    >
-      <svg viewBox="0 0 1200 28" preserveAspectRatio="none">
-        <path
-          d="M0,10 C 20,22 40,0 60,9 C 80,18 100,2 120,11 C 140,20 160,3 180,10
-             C 200,17 220,1 240,9 C 260,17 280,3 300,11 C 320,19 340,2 360,10
-             C 380,18 400,1 420,9 C 440,17 460,3 480,11 C 500,19 520,2 540,10
-             C 560,18 580,1 600,9 C 620,17 640,3 660,11 C 680,19 700,2 720,10
-             C 740,18 760,1 780,9 C 800,17 820,3 840,11 C 860,19 880,2 900,10
-             C 920,18 940,1 960,9 C 980,17 1000,3 1020,11 C 1040,19 1060,2 1080,10
-             C 1100,18 1120,1 1140,9 C 1160,17 1180,3 1200,10 L1200,28 L0,28 Z"
-          fill={fill}
-        />
-      </svg>
-    </div>
+      aria-hidden
+      className={cn(
+        "block h-4 w-full bg-primary sm:h-5 md:h-7 2xl:h-10",
+        flip && "rotate-180",
+      )}
+      style={{
+        WebkitMaskImage: waveMask,
+        maskImage: waveMask,
+        WebkitMaskRepeat: "repeat-x",
+        maskRepeat: "repeat-x",
+        WebkitMaskSize: "auto 100%",
+        maskSize: "auto 100%",
+      }}
+    />
+  );
+}
+
+export default function PageDivider() {
+  const reduceMotion = useReducedMotion();
+
+  return (
+    <section aria-label="Highlights" className="relative bg-[#F9F8F6]">
+      <Wave />
+
+      <div className="relative -my-px overflow-hidden bg-primary py-3 md:py-5 2xl:py-8">
+        <motion.div
+          className="flex w-max"
+          animate={reduceMotion ? undefined : { x: ["0%", "-50%"] }}
+          transition={{
+            duration: 40,
+            ease: "linear",
+            repeat: Infinity,
+          }}
+        >
+          {[0, 1].map((copy) => (
+            <div
+              key={copy}
+              aria-hidden={copy === 1}
+              className="flex shrink-0 items-center"
+            >
+              {group.map((text, i) => (
+                <div
+                  key={`${copy}-${i}`}
+                  className="flex items-center gap-6 px-4 sm:gap-8 sm:px-6 md:gap-12 md:px-10 2xl:gap-16 2xl:px-14"
+                >
+                  <span className="whitespace-nowrap font-display text-3xl font-black uppercase leading-none text-white sm:text-5xl md:text-6xl lg:text-7xl 2xl:text-8xl">
+                    {text}
+                  </span>
+                  <TrendingUp
+                    className="h-6 w-6 shrink-0 text-white sm:h-9 sm:w-9 md:h-12 md:w-12 2xl:h-16 2xl:w-16"
+                    strokeWidth={2.5}
+                    aria-hidden
+                  />
+                </div>
+              ))}
+            </div>
+          ))}
+        </motion.div>
+      </div>
+
+      <Wave flip />
+    </section>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
+import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 
 const EASE: [number, number, number, number] = [0.76, 0, 0.24, 1];
 const ACCENT = "#ff3300";
@@ -133,7 +134,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 bg-[#1a1a1a]">
+      <header className="fixed inset-x-0 top-0 z-50">
         <div className="mx-auto flex h-20 w-full max-w-[2200px] items-center justify-between px-5 sm:px-8 md:h-24 md:px-12 2xl:h-28 2xl:px-20">
           <a
             href="#top"
@@ -144,12 +145,12 @@ export default function Navbar() {
             <img
               src="/comida.png"
               alt="Comida"
-              className="h-8 w-auto object-contain md:h-24 2xl:h-32"
+              className="h-16 w-auto object-contain md:h-24 2xl:h-32"
             />
           </a>
 
           <div className="flex items-center gap-3 md:gap-4">
-            <div ref={langRef} className="relative">
+            {/* <div ref={langRef} className="relative">
               <button
                 type="button"
                 aria-haspopup="listbox"
@@ -159,24 +160,17 @@ export default function Navbar() {
                   setLangOpen((v) => !v);
                   setOpen(false);
                 }}
-                className="flex h-11 w-14 items-center justify-center gap-1.5 rounded-full border border-white/10 bg-[#1a1a1a] transition-colors hover:border-white/30 md:h-12 md:w-16 2xl:h-14 2xl:w-[4.5rem]"
+                className="flex h-11 w-14 items-center justify-center gap-1.5 rounded-full border border-white/10 transition-colors hover:border-white/30 md:h-12 md:w-16 2xl:h-14 2xl:w-[4.5rem]"
               >
                 <Flag code={lang} />
-                <motion.svg
+                <motion.span
                   animate={{ rotate: langOpen ? 180 : 0 }}
                   transition={{ duration: 0.3, ease: EASE }}
-                  width="12"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  className="flex"
                   aria-hidden
                 >
-                  <path d="M2 4.5L6 8.5L10 4.5" />
-                </motion.svg>
+                  <ChevronDown className="h-4 w-4 text-white" strokeWidth={2} />
+                </motion.span>
               </button>
 
               <AnimatePresence>
@@ -213,7 +207,7 @@ export default function Navbar() {
                   </motion.ul>
                 )}
               </AnimatePresence>
-            </div>
+            </div> */}
 
             <motion.button
               type="button"
@@ -227,25 +221,28 @@ export default function Navbar() {
               }}
               className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-b from-[#ff4a1f] to-[#ff2d00] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] md:h-12 md:w-12 2xl:h-14 2xl:w-14 2xl:rounded-2xl"
             >
-              <span className="flex flex-col gap-[5px]">
+              <AnimatePresence mode="wait" initial={false}>
                 <motion.span
-                  animate={open ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-                  transition={{ duration: 0.35, ease: EASE }}
-                  className="block h-[3px] w-6 rounded-full bg-white"
-                />
-                <motion.span
-                  animate={
-                    open ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }
-                  }
-                  transition={{ duration: 0.25, ease: EASE }}
-                  className="block h-[3px] w-6 rounded-full bg-white"
-                />
-                <motion.span
-                  animate={open ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-                  transition={{ duration: 0.35, ease: EASE }}
-                  className="block h-[3px] w-6 rounded-full bg-white"
-                />
-              </span>
+                  key={open ? "close" : "menu"}
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2, ease: EASE }}
+                  className="flex"
+                >
+                  {open ? (
+                    <X
+                      className="h-6 w-6 text-white 2xl:h-7 2xl:w-7"
+                      strokeWidth={2.5}
+                    />
+                  ) : (
+                    <Menu
+                      className="h-6 w-6 text-white 2xl:h-7 2xl:w-7"
+                      strokeWidth={2.5}
+                    />
+                  )}
+                </motion.span>
+              </AnimatePresence>
             </motion.button>
           </div>
         </div>
@@ -295,27 +292,25 @@ export default function Navbar() {
                     style={{
                       opacity: hovered === null || hovered === i ? 1 : 0.3,
                     }}
-                    className="relative inline-flex font-display text-5xl font-black uppercase tracking-tight text-white transition-opacity duration-300 sm:text-6xl md:text-7xl 2xl:text-8xl"
+                    className="relative inline-flex font-display text-3xl font-black uppercase tracking-tight text-white transition-opacity duration-300 md:text-5xl 2xl:text-6xl"
                   >
                     <RollingText text={link.label} />
 
-                    <motion.svg
+                    <motion.span
                       variants={{
                         rest: { x: -20, opacity: 0 },
                         hover: { x: 0, opacity: 1 },
                       }}
                       transition={{ duration: 0.4, ease: EASE }}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke={ACCENT}
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="absolute left-full top-1/2 ml-3 h-6 w-6 -translate-y-1/2 md:ml-5 md:h-9 md:w-9 2xl:h-12 2xl:w-12"
+                      className="absolute bottom-0 left-full top-0 ml-3 flex items-center md:ml-5"
                       aria-hidden
                     >
-                      <path d="M5 12H19M13 6L19 12L13 18" />
-                    </motion.svg>
+                      <ArrowRight
+                        className="h-6 w-6 md:h-9 md:w-9 2xl:h-12 2xl:w-12"
+                        strokeWidth={2.5}
+                        style={{ color: ACCENT }}
+                      />
+                    </motion.span>
 
                     <motion.span
                       variants={{
