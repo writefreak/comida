@@ -228,18 +228,12 @@ export default function MenuSection() {
     setActive(Math.min(total - 1, Math.round(v * total * 0.999)));
   });
 
-  const barScale = useTransform(progress, [0, 1], [0, 1]);
-
   // Button: scrubbed in and out
   const btnRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: btnProg } = useScroll({
     target: btnRef,
     offset: ["start end", "end start"],
   });
-  const btnStops = [0, 0.3, 0.7, 1];
-  const btnScale = useTransform(btnProg, btnStops, [0.3, 1, 1, 0.3]);
-  const btnRotate = useTransform(btnProg, btnStops, [-12, 0, 0, 12]);
-  const btnOpacity = useTransform(btnProg, btnStops, [0, 1, 1, 0]);
 
   if (reduceMotion) {
     return (
@@ -256,7 +250,7 @@ export default function MenuSection() {
             {menuCards.map((c) => (
               <div
                 key={c.id}
-                className="relative h-105] overflow-hidden rounded-2xl"
+                className="relative h-[420px] overflow-hidden rounded-2xl"
               >
                 <img
                   src={c.image}
@@ -277,9 +271,13 @@ export default function MenuSection() {
   }
 
   return (
-    <section
+    <motion.section
       aria-label="Menu Offerings"
       className="relative w-full bg-[#f9f8f6]"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
     >
       <Wave />
 
@@ -318,6 +316,6 @@ export default function MenuSection() {
       </div>
 
       <Wave flip />
-    </section>
+    </motion.section>
   );
 }
