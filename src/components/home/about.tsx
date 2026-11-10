@@ -84,7 +84,7 @@ export default function AboutSection() {
             transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
           >
             <div>
-              <h2 className="text-3xl md:text-5xl font-bold text-[#1c1917] md:pb-12 pb-6 max-w-md leading-tight md:leading-15">
+              <h2 className="text-[26.5px] md:text-5xl font-bold text-[#1c1917] md:pb-12 pb-6 max-w-md leading-[36px] md:leading-15">
                 <span className="text-primary"> An Exquisite Blend </span> of
                 Taste and Pure Culinary Expertise{" "}
               </h2>
@@ -102,7 +102,7 @@ export default function AboutSection() {
                     >
                       <div className="flex items-center justify-between">
                         <span
-                          className={`text-xl md:text-2xl font-medium transition-colors duration-300 ${
+                          className={`text-base md:text-2xl font-medium transition-colors duration-300 ${
                             isActive
                               ? "text-primary"
                               : "text-[#a1a1aa] group-hover:text-[#4b5563]"
@@ -174,7 +174,7 @@ export default function AboutSection() {
             </div>
 
             {/* Description Text with Rolling Entrance */}
-            <div className="h-28 sm:h-24 relative overflow-hidden">
+            <div className="h-20 sm:h-24 relative overflow-hidden">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.p
                   key={activeItem.id}
@@ -185,7 +185,7 @@ export default function AboutSection() {
                     duration: 0.35,
                     ease: [0.25, 1, 0.5, 1],
                   }}
-                  className="text-base sm:text-lg text-[#52525b] leading-relaxed absolute top-0 left-0 w-full"
+                  className="text-sm md:text-lg text-[#52525b] leading-relaxed absolute top-0 left-0 w-full"
                 >
                   {activeItem.description}
                 </motion.p>
@@ -193,7 +193,7 @@ export default function AboutSection() {
             </div>
 
             {/* CTA Button */}
-            <div>
+            <div className="pb-20 md:pb-10">
               <CustomBtn rightIcon={<ArrowRight className="w-4 h-4" />}>
                 Explore our menu
               </CustomBtn>

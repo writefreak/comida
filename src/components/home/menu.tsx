@@ -55,7 +55,7 @@ function Wave({ flip = false }: { flip?: boolean }) {
     <div
       aria-hidden
       className={cn(
-        "block h-5 w-full bg-[#18181b] sm:h-7 md:h-20 2xl:h-14",
+        "block h-5 w-full bg-charcoal sm:h-7 md:h-20 2xl:h-14",
         flip && "rotate-180",
       )}
       style={{
@@ -83,11 +83,11 @@ function ScrubWord({
 }) {
   const start = (index / total) * 0.6;
   const end = start + 0.4;
-  const y = useTransform(progress, [start, end], ["115%", "0%"]);
+  const y = useTransform(progress, [start, end], ["125%", "0%"]);
   const rotate = useTransform(progress, [start, end], [8, 0]);
 
   return (
-    <span className="mr-[0.25em] inline-block overflow-hidden align-bottom">
+    <span className="mr-[0.25em] -mb-[0.2em] inline-block overflow-hidden pb-[0.2em] align-bottom">
       <motion.span
         className="inline-block origin-bottom-left"
         style={{ y, rotate }}
@@ -109,7 +109,7 @@ function ScrubHeading({ text }: { text: string }) {
   return (
     <h2
       ref={ref}
-      className="text-4xl font-bold leading-[1.05] text-[#f4f4f5] sm:text-5xl md:text-6xl 2xl:text-8xl"
+      className="text-3xl text-center font-bold leading-[1.05] text-[#f4f4f5] md:text-5xl 2xl:text-8xl"
     >
       {words.map((w, i) => (
         <ScrubWord
@@ -191,7 +191,7 @@ function Panel({
           <p className="mb-6 max-w-xl text-base leading-relaxed text-white/85 drop-shadow-md sm:text-lg 2xl:max-w-3xl 2xl:text-3xl">
             {card.description}
           </p>
-          <div className="inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-[#f97316] transition-colors duration-200 group-hover:text-[#fb923c] 2xl:text-xl">
+          <div className="inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-primary transition-colors duration-200 group-hover:text-[#fb923c] 2xl:text-xl">
             <span>READ MORE</span>
             <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 2xl:h-6 2xl:w-6" />
           </div>
@@ -199,7 +199,7 @@ function Panel({
 
         <motion.div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[#18181b]"
+          className="pointer-events-none absolute inset-0 bg-charcoal"
           style={{ opacity: dim }}
         />
       </motion.article>
@@ -245,12 +245,13 @@ export default function MenuSection() {
     return (
       <section
         aria-label="Menu Offerings"
-        className="w-full bg-[#18181b] px-6 py-20 text-[#f4f4f5] lg:px-16"
+        className="w-full bg-charcoal px-6 py-20 text-[#f4f4f5] lg:px-16"
       >
         <div className="mx-auto max-w-7xl 2xl:max-w-[1600px]">
           <h2 className="text-4xl font-bold md:text-5xl">
             Our Dining Offerings
           </h2>
+
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {menuCards.map((c) => (
               <div
@@ -282,15 +283,19 @@ export default function MenuSection() {
     >
       <Wave />
 
-      <div className="relative z-10 -my-px bg-[#18181b] text-[#f4f4f5]">
+      <div className="relative z-10 -my-px bg-charcoal text-[#f4f4f5]">
         {/* Header */}
-        <div className="mx-auto max-w-7xl px-6 md:pb-8 pt-16 md:pt-32 lg:px-16 2xl:max-w-[1800px] 2xl:pb-28 2xl:pt-32">
+        <div className="mx-auto flex flex-col items-center gap-4 max-w-7xl px-6 md:pb-8 pt-24 md:pt-32 lg:px-16 2xl:max-w-[1800px] 2xl:pb-28 2xl:pt-32">
           <ScrubHeading text="Our Dining Offerings" />
+          <p className="text-sm text-center md:max-w-md md:text-lg text-neutral-400">
+            Crafted to showcase flavor and variety, our menu offers something
+            exceptional for every palate.
+          </p>
         </div>
 
         {/* Pinned stacking track */}
         <div ref={trackRef} style={{ height: `${(total + 1) * 100}svh` }}>
-          <div className="sticky top-0 h-[100svh] overflow-hidden">
+          <div className="sticky top-0 min-h-svh overflow-hidden">
             {menuCards.map((card, i) => (
               <Panel
                 key={card.id}
@@ -300,20 +305,10 @@ export default function MenuSection() {
                 progress={progress}
               />
             ))}
-
-            {/* Progress UI */}
-            {/* <div className="pointer-events-none absolute inset-x-0 bottom-3 z-50 flex items-center justify-center gap-4 px-6 2xl:bottom-6">
-              <div className="h-[2px] w-40 overflow-hidden rounded-full bg-[#3f3f46] 2xl:w-64">
-                <motion.div
-                  className="h-full origin-left bg-[#ea580c]"
-                  style={{ scaleX: barScale }}
-                />
-              </div>
-            </div> */}
           </div>
         </div>
 
-        <div ref={btnRef} className="flex justify-center py-10 md:pb-16">
+        <div ref={btnRef} className="flex justify-center pb-10 md:pb-16">
           <div>
             <CustomBtn rightIcon={<ArrowRight className="h-4 w-4" />}>
               Explore full menu
